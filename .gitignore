@@ -1,0 +1,17 @@
+# --- Django (DRF) 用の除外設定 ---
+recipe_app_drf/**/__pycache__/
+recipe_app_drf/**/*.py[cod]
+recipe_app_drf/**/*$py.class
+recipe_app_drf/**/.venv/
+recipe_app_drf/**/db.sqlite3
+
+# --- Flutter 用の除外設定 ---
+recipe_app_flutter/**/.buildvcs
+recipe_app_flutter/**/.dart_tool/
+recipe_app_flutter/**/.flutter-plugins
+recipe_app_flutter/**/.flutter-plugins-dependencies
+recipe_app_flutter/**/.packages
+recipe_app_flutter/**/.pub-cache/
+recipe_app_flutter/**/.pub/
+recipe_app_flutter/**/build/
+recipe_app_flutter/**/*.epf
