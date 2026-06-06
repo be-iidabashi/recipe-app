@@ -14,7 +14,8 @@ class CategoryViewSet(
     serializer_class = CategorySerializer
 
 class RecipeViewSet(
-    mixins.RetrieveModelMixin,
+    # mixins.RetrieveModelMixin, ## api/recipes/1 のレシピ1件GET用
+    # mixins.ListModelMixin, ## api/recipes/ のレシピ全件GET用
     mixins.CreateModelMixin,
     mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
