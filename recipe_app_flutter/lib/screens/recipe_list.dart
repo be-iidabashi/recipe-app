@@ -1,50 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../models/recipe.dart';
+import '../providers/recipe.dart';
 
-import '../models/category.dart';
-import '../providers/category.dart';
-import '../services/category.dart';
-import 'category_form.dart'; // 追加
-import 'recipe_list.dart'; // 追加
-
-class CategoryListScreen extends StatelessWidget {
-  const CategoryListScreen({super.key});
+class RecipeListScreen extends StatelessWidget {
+  const RecipeListScreen({super.key, required this.categoryId});
+  final int categoryId;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('カテゴリ一覧'),
+        title: const Text('レシピ一覧'),
       ),
       body: Consumer(
         builder: (context, ref, child) {
-          final asyncValue = ref.watch(categoryProvider);
+          final asyncValue = ref.watch(recipeProvider(categoryId));
           return asyncValue.when(
-            data: (categories) => _CategoryTable(categories: categories),
+            data: (recipes) => _RecipeTable(recipes: recipes),
             error: (error, stack) => Center(child: Text('Error: $error')),
             loading: () => const Center(child: CircularProgressIndicator()),
           );
         },
       ),
-
       floatingActionButton: FloatingActionButton(
-        onPressed: () { // 修正
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const CategoryFormScreen()),
-          );
-        },
+        onPressed: () {},
         child: const Icon(Icons.add),
       ),
-
     );
   }
 }
 
-class _CategoryTable extends ConsumerWidget {
-  const _CategoryTable({required this.categories});
-
-  final List<Category> categories;
+class _RecipeTable extends ConsumerWidget {
+  const _RecipeTable({required this.recipes});
+  final List<Recipe> recipes;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -71,7 +60,7 @@ class _CategoryTable extends ConsumerWidget {
               Padding(
                 padding: EdgeInsets.all(12),
                 child: Text(
-                  'カテゴリ名',
+                  'レシピ名',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
@@ -84,27 +73,19 @@ class _CategoryTable extends ConsumerWidget {
               ),
             ],
           ),
-          ...categories.map(
-            (category) => TableRow(
+          ...recipes.map(
+            (recipe) => TableRow(
               children: [
                 Padding(
                   padding: const EdgeInsets.all(12),
-                  child: Text(category.id.toString()),
+                  child: Text(recipe.id.toString()),
                 ),
                 GestureDetector(
-                  onTap: () { // 追加
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                          RecipeListScreen(categoryId: category.id),
-                      ),
-                    );
-                  },
+                  onTap: () {},
                   child: Padding(
                     padding: const EdgeInsets.all(12),
                     child: Text(
-                      category.name,
+                      recipe.title,
                       style: const TextStyle(
                         decoration: TextDecoration.underline,
                         color: Colors.black,
@@ -118,34 +99,12 @@ class _CategoryTable extends ConsumerWidget {
                     children: [
                       IconButton(
                         icon: const Icon(Icons.edit),
-                        onPressed: () { // 追加
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                CategoryFormScreen(category: category),
-                            ),
-                          );
-                        },
+                        onPressed: () {},
                       ),
-                      IconButton( // 修正
+                      IconButton(
                         icon: const Icon(Icons.delete),
-                        onPressed: () async {
-                          try {
-                            await CategoryService().delete(category.id);
-                            ref.invalidate(categoryProvider);
-                            if (!context.mounted) return;
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('カテゴリを削除しました')),
-                            );
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('エラーが発生しました: $e')),
-                            );
-                          }
-                        },
+                        onPressed: () {},
                       ),
-
                     ],
                   ),
                 ),
