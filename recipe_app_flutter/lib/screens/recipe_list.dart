@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/recipe.dart';
 import '../providers/recipe.dart';
+import 'recipe_form.dart';
 
 class RecipeListScreen extends StatelessWidget {
   const RecipeListScreen({super.key, required this.categoryId});
@@ -23,10 +24,19 @@ class RecipeListScreen extends StatelessWidget {
           );
         },
       ),
+
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () { // 追加
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => RecipeFormScreen(categoryId: categoryId),
+            ),
+          );
+        },
         child: const Icon(Icons.add),
       ),
+
     );
   }
 }

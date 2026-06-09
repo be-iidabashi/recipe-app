@@ -60,6 +60,19 @@ class MyApp extends StatelessWidget {
           ),
         ),
 
+
+        sliderTheme: SliderThemeData( // 追加
+          activeTrackColor: Colors.orange,
+          inactiveTrackColor: Colors.orange[100],
+          thumbColor: Colors.orange,
+          overlayColor: Colors.orange.withOpacity(0.2),
+          valueIndicatorColor: Colors.orange,
+          valueIndicatorTextStyle: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+
       ),
 
       home: const CategoryListScreen(), // 修正
