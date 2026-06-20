@@ -47,4 +47,28 @@ class RecipeService {
     return Recipe.fromJson(jsonDecode(response.body));
   }
 
+  Future<void> update(Recipe recipe) async {
+    final response = await http.put(
+      baseUrl.replace(path: '${baseUrl.path}/recipes/${recipe.id}/'),
+      headers: {
+        HttpHeaders.contentTypeHeader: ContentType.json.value,
+      },
+      body: jsonEncode(recipe.toJson()),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('レシピの更新に失敗しました');
+    }
+  }
+
+  Future<void> delete(int recipeId) async {
+    final response = await http.delete(
+      baseUrl.replace(path: '${baseUrl.path}/recipes/$recipeId/'),
+    );
+
+    if (response.statusCode != 204) {
+      throw Exception('レシピの削除に失敗しました');
+    }
+  }
+
 }

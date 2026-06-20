@@ -18,7 +18,7 @@ class RecipeFormScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('レシピを作成'),
+        title: Text(recipe == null ? 'レシピを作成' : 'レシピを編集'),
       ),
       body: _RecipeFormBody(
         recipe: recipe,
@@ -67,19 +67,32 @@ class _RecipeFormBodyState extends ConsumerState<_RecipeFormBody> {
       return;
     }
     try {
-      if (widget.categoryId == null) {
-        throw Exception('カテゴリーIDが指定されていません');
+      if (widget.recipe == null) { // 修正
+        if (widget.categoryId == null) {
+          throw Exception('カテゴリーIDが指定されていません');
+        }
+        await RecipeService().create(
+          _titleController.text,
+          _instructionsController.text,
+          _cookingTime,
+          widget.categoryId!,
+        );
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('レシピが正常に作成されました')),
+        );
+      } else {
+        final updatedRecipe = widget.recipe!.copyWith(
+          title: _titleController.text,
+          instructions: _instructionsController.text,
+          cookingTimeMinutes: _cookingTime,
+        );
+        await RecipeService().update(updatedRecipe);
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('レシピが正常に更新されました')),
+        );
       }
-      await RecipeService().create(
-        _titleController.text,
-        _instructionsController.text,
-        _cookingTime,
-        widget.categoryId!,
-      );
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('レシピが正常に作成されました')),
-      );
       ref.invalidate(recipeProvider);
       Navigator.pop(context);
     } catch (e) {
@@ -143,7 +156,7 @@ class _RecipeFormBodyState extends ConsumerState<_RecipeFormBody> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () => _saveRecipe(),
-                  child: const Text('作成'),
+                  child: Text(widget.recipe == null ? '作成' : '更新'),
                 ),
               ),
             ],
