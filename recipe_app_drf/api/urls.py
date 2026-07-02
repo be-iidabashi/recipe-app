@@ -14,4 +14,5 @@ urlpatterns = [
         views.RecipeListView.as_view(),
         name="recipes",
     ),
+    path('recipes/<int:recipe_id>/comments/', views.CommentListCreateView.as_view(), name='comment-list-create'),
 ]
