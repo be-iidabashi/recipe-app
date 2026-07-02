@@ -5,6 +5,9 @@ import '../models/category.dart';
 
 class CategoryService {
   final baseUrl = Uri.http('127.0.0.1:8000', '/api');
+  // Android用
+  // final baseUrl = Uri.http('10.0.2.2:8000', '/api');
+
 
   Future<List<Category>> fetchAll() async {
     final response = await http.get(

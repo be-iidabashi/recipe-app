@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/recipe.dart';
 import '../providers/recipe.dart';
 import '../services/recipe.dart';
+import 'recipe_detail.dart';
 import 'recipe_form.dart';
 
 class RecipeListScreen extends StatelessWidget {
@@ -92,7 +93,15 @@ class _RecipeTable extends ConsumerWidget {
                   child: Text(recipe.id.toString()),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            RecipeDetailScreen(recipe: recipe),
+                      ),
+                    );
+                  },
                   child: Padding(
                     padding: const EdgeInsets.all(12),
                     child: Text(

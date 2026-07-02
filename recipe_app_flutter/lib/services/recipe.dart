@@ -5,6 +5,8 @@ import '../models/recipe.dart';
 
 class RecipeService {
   final baseUrl = Uri.http('127.0.0.1:8000', '/api');
+  // Android用
+  // final baseUrl = Uri.http('10.0.2.2:8000', '/api');
 
   Future<List<Recipe>> fetchByCategory(int categoryId) async {
     final response = await http.get(
